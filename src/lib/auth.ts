@@ -48,7 +48,7 @@ class AuthService {
 
   async login(email: string, password: string): Promise<{ user: User; token: string } | null> {
     try {
-      const { data, error } = await apiClient.post<LoginResponse>('/auth/login', {
+      const { data, error } = await apiClient.post<LoginResponse>('/api/auth/login', {
         email,
         password,
       });
@@ -75,7 +75,7 @@ class AuthService {
 
   async signup(email: string, password: string, name: string): Promise<{ user: User; token: string } | null> {
     try {
-      const { data, error } = await apiClient.post<SignupResponse>('/auth/signup', {
+      const { data, error } = await apiClient.post<SignupResponse>('/api/auth/signup', {
         email,
         password,
         full_name: name,

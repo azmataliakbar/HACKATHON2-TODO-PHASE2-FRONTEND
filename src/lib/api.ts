@@ -1,7 +1,7 @@
 // frontend/src/lib/api.ts
 // API client wrapper with JWT injection and error handling
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 class ApiError extends Error {
   public statusCode: number;
@@ -23,8 +23,6 @@ export interface ApiResponse<T = any> {
 export const apiClient = {
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
     try {
-      // Get token from wherever it's stored (e.g., localStorage, auth context)
-      // This is a placeholder - you'll need to implement actual token retrieval
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
       const headers = {
@@ -36,33 +34,40 @@ export const apiClient = {
         headers.Authorization = `Bearer ${token}`;
       }
 
+      const fullUrl = `${API_BASE_URL}${endpoint}`;
+      console.log('🔍 Full URL:', fullUrl);
+      console.log('🔍 API_BASE_URL:', API_BASE_URL);
+      console.log('🔍 endpoint:', endpoint);
+
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers,
       });
 
+      console.log('📡 Status:', response.status, response.ok);
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new ApiError(
-          errorData.message || `HTTP error! status: ${response.status}`,
+          errorData.detail || errorData.message || `HTTP ${response.status}`,
           response.status,
           errorData
         );
       }
 
       const data = await response.json();
+      console.log('✅ Success:', data);
       return { data };
     } catch (error) {
       if (error instanceof ApiError) {
         return { error };
       }
-
-      // Handle network errors or other non-API errors
-      if (error instanceof TypeError && error.message.includes('fetch failed')) {
-        throw new ApiError('Network error - please check your connection', 500);
+      
+      if (error instanceof TypeError) {
+        throw new ApiError('Network error - check connection', 500);
       }
 
-      throw new ApiError('An unexpected error occurred', 500);
+      throw new ApiError('Unexpected error occurred', 500);
     }
   },
 
@@ -97,3 +102,4 @@ export const apiClient = {
 };
 
 export default apiClient;
+export { ApiError };

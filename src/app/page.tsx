@@ -13,8 +13,8 @@ export default function HomePage() {
   useEffect(() => {
     // Check if user is authenticated
     if (authService.isAuthenticated()) {
-      // Redirect to dashboard if logged in
-      router.push('/dashboard');
+      // Redirect to chat if logged in
+      router.push('/chat');
     }
   }, [router]);
 
@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="space-y-6">
             <div>
               <button
-                onClick={() => router.push('/signup')}
+                onClick={() => router.push('/auth/signup')}
                 className="btn-responsive w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl neon-glow-pink"
               >
                 Sign up
@@ -50,7 +50,7 @@ export default function HomePage() {
 
             <div>
               <button
-                onClick={() => router.push('/login')}
+                onClick={() => router.push('/auth/login')}
                 className="btn-responsive w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl neon-glow-blue"
               >
                 Log in
@@ -80,3 +80,8 @@ export default function HomePage() {
     </div>
   );
 }
+
+// Full name: Test User
+// Email: brandnew12345@example.com
+// Password: TestPass123!@#
+// Confirm Password: TestPass123!@#

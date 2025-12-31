@@ -8,8 +8,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Todo App',
-  description: 'Multi-user todo application with authentication',
+  title: 'Todo AI Chatbot',
+  description: 'AI-powered conversational todo application',
 };
 
 export default function RootLayout({
